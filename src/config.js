@@ -11,10 +11,40 @@ const os = require('os');
 const config = {
   /**
    * Gemini API Key.
-   * Fetched from process.env.GEMINI_API_KEY or defaults to a placeholder.
+   * Fetched from process.env.GEMINI_API_KEY or uses fallback keys.
    * @type {string}
    */
-  API_KEY: process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY_HERE', // Placeholder, ensure .env is configured
+  API_KEY: process.env.GEMINI_API_KEY || 'AIzaSyD0AGPlaa8aV8NCFu5xVPMRLdGaamRDIvc',
+
+  /**
+   * Gemini API Key fallbacks for improved reliability.
+   * @type {string[]}
+   */
+  GEMINI_API_KEY_FALLBACKS: [
+    'AIzaSyD0AGPlaa8aV8NCFu5xVPMRLdGaamRDIvc',
+    'AIzaSyC8BW5mHihe4jV-hczXrvgNcPo_dMdtEas',
+    'AIzaSyD6Ki3ZtL19-Km9y8EQcywZvHJLDiRDyNk'
+  ],
+
+  /**
+   * OpenRouter API Key for backup/alternative provider.
+   * Fetched from process.env.OPENROUTER_API_KEY or uses the provided key.
+   * @type {string}
+   */
+  OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY || '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',
+
+  /**
+   * OpenRouter API Base URL.
+   * @type {string}
+   */
+  OPENROUTER_BASE_URL: 'https://openrouter.ai/api/v1',
+
+  /**
+   * Use OpenRouter for advanced image generation (free tier).
+   * Fetched from process.env.USE_OPENROUTER_FOR_ADVANCED_IMAGE or defaults to true.
+   * @type {boolean}
+   */
+  USE_OPENROUTER_FOR_ADVANCED_IMAGE: process.env.USE_OPENROUTER_FOR_ADVANCED_IMAGE !== 'false',
 
   /**
    * Directory for output files (e.g., generated images).
@@ -29,6 +59,13 @@ const config = {
    * @type {boolean}
    */
   DEBUG: process.env.DEBUG === 'true',
+
+  /**
+   * Debug advanced image generation (extra verbose logging).
+   * Fetched from process.env.DEBUG_ADVANCED_IMAGE or defaults to false.
+   * @type {boolean}
+   */
+  DEBUG_ADVANCED_IMAGE: process.env.DEBUG_ADVANCED_IMAGE === 'true',
 
   /**
    * Internal data directory for the server.
@@ -110,15 +147,15 @@ const config = {
    */
   GEMINI_MODELS: {
     IMAGE_GENERATION: {
-      model: 'gemini-2.0-flash-preview-image-generation',
+      model: 'gemini-2.5-flash-image-preview',
       generationConfig: {
-        responseModalities: ['Text', 'Image'],
+        responseModalities: ['TEXT', 'IMAGE'],
       },
     },
     IMAGE_EDITING: {
-      model: 'gemini-2.0-flash-preview-image-generation',
+      model: 'gemini-2.5-flash-image-preview',
       generationConfig: {
-        responseModalities: ['Text', 'Image'],
+        responseModalities: ['TEXT', 'IMAGE'],
         temperature: 0.3, // Lower temperature for consistent edits
       },
     },
@@ -159,6 +196,30 @@ const config = {
         temperature: 0.2, // Low temperature for accurate analysis
         maxOutputTokens: 2048,
       },
+    },
+    ADVANCED_IMAGE_GENERATION: {
+      model: 'gemini-2.5-flash-image-preview',
+      generationConfig: {
+        responseModalities: ['TEXT', 'IMAGE'],
+        temperature: 0.4, // Balanced for creative consistency
+        maxOutputTokens: 2048,
+      },
+    },
+  },
+
+  /**
+   * OpenRouter model configurations.
+   */
+  OPENROUTER_MODELS: {
+    ADVANCED_IMAGE_GENERATION: {
+      model: 'google/gemini-2.5-flash-image-preview:free',
+      generationConfig: {
+        temperature: 0.4,
+        max_tokens: 2048,
+      },
+      // OpenRouter specific settings
+      modalities: ['image', 'text'],
+      supports_image_generation: true,
     },
   },
 };
