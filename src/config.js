@@ -31,7 +31,7 @@ const config = {
    * Fetched from process.env.OPENROUTER_API_KEY or uses the provided key.
    * @type {string}
    */
-  OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY || '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',
+  OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY || '',
 
   /**
    * OpenRouter API Base URL.
@@ -147,13 +147,13 @@ const config = {
    */
   GEMINI_MODELS: {
     IMAGE_GENERATION: {
-      model: 'gemini-2.5-flash-image-preview',
+      model: 'gemini-2.0-flash-exp',
       generationConfig: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
     },
     IMAGE_EDITING: {
-      model: 'gemini-2.5-flash-image-preview',
+      model: 'gemini-2.0-flash-exp',
       generationConfig: {
         responseModalities: ['TEXT', 'IMAGE'],
         temperature: 0.3, // Lower temperature for consistent edits
@@ -198,7 +198,7 @@ const config = {
       },
     },
     ADVANCED_IMAGE_GENERATION: {
-      model: 'gemini-2.5-flash-image-preview',
+      model: 'gemini-2.0-flash-exp',
       generationConfig: {
         responseModalities: ['TEXT', 'IMAGE'],
         temperature: 0.4, // Balanced for creative consistency
@@ -211,8 +211,9 @@ const config = {
    * OpenRouter model configurations.
    */
   OPENROUTER_MODELS: {
+    // Nano Banana - Gemini 2.5 Flash Image (GA)
     ADVANCED_IMAGE_GENERATION: {
-      model: 'google/gemini-2.5-flash-image-preview:free',
+      model: 'google/gemini-2.5-flash-image',
       generationConfig: {
         temperature: 0.4,
         max_tokens: 2048,
@@ -220,6 +221,21 @@ const config = {
       // OpenRouter specific settings
       modalities: ['image', 'text'],
       supports_image_generation: true,
+    },
+    // Nano Banana Pro - Gemini 3 Pro Image (most advanced)
+    NANO_BANANA_PRO: {
+      model: 'google/gemini-3-pro-image-preview',
+      generationConfig: {
+        temperature: 0.4,
+        max_tokens: 4096,
+      },
+      // OpenRouter specific settings
+      modalities: ['image', 'text'],
+      supports_image_generation: true,
+      // Nano Banana Pro specific capabilities
+      max_reference_images: 14,
+      supported_resolutions: ['1k', '2k', '4k'],
+      supported_aspect_ratios: ['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9', '21:9'],
     },
   },
 };

@@ -13,6 +13,8 @@ const GeminiService = require('../gemini/gemini-service'); // Gemini API Service
 // Import individual tool modules
 const ImageGenerationTool = require('./image-generation');
 const ImageEditingTool = require('./image-editing');
+const AdvancedImageTool = require('./advanced-image');
+const NanoBananaProTool = require('./nano-banana-pro');
 const ChatTool = require('./chat');
 const AudioTranscriptionTool = require('./audio-transcription');
 const CodeExecutionTool = require('./code-execution');
@@ -75,6 +77,8 @@ async function dispatchToolCall(toolName, args) {
 // Register tools here as they are implemented, passing the shared instances
 registerTool(new ImageGenerationTool(intelligenceSystem, geminiService));
 registerTool(new ImageEditingTool(intelligenceSystem, geminiService));
+registerTool(new AdvancedImageTool(intelligenceSystem, geminiService));
+registerTool(new NanoBananaProTool(intelligenceSystem, geminiService));
 registerTool(new ChatTool(intelligenceSystem, geminiService));
 registerTool(new AudioTranscriptionTool(intelligenceSystem, geminiService));
 registerTool(new CodeExecutionTool(intelligenceSystem, geminiService));
