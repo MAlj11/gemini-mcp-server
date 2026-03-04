@@ -11,6 +11,7 @@ const { getGeminiModelConfig } = require('./models');
 const { formatTextPrompt, formatImagePrompt } = require('./request-handler');
 const { extractTextContent, extractImageData } = require('./response-parser');
 const { log } = require('../utils/logger');
+const config = require('../config');
 
 class GeminiService {
   constructor() {
@@ -31,7 +32,8 @@ class GeminiService {
       if (modelConfig.tools) {
         modelOptions.tools = modelConfig.tools;
       }
-      const model = this.genAI.getGenerativeModel(modelOptions);
+      const requestOptions = config.GEMINI_BASE_URL ? { baseUrl: config.GEMINI_BASE_URL } : undefined;
+      const model = this.genAI.getGenerativeModel(modelOptions, requestOptions);
       const content = formatTextPrompt(prompt);
 
       // Build request with optional generationConfig
@@ -59,7 +61,8 @@ class GeminiService {
     try {
       const modelConfig = getGeminiModelConfig(modelType);
       // Pass only the model name to getGenerativeModel
-      const model = this.genAI.getGenerativeModel({ model: modelConfig.model });
+      const requestOptions = config.GEMINI_BASE_URL ? { baseUrl: config.GEMINI_BASE_URL } : undefined;
+      const model = this.genAI.getGenerativeModel({ model: modelConfig.model }, requestOptions);
       const content = formatTextPrompt(prompt); // Image generation also uses text prompt
 
       // Pass the generationConfig to the generateContent method
@@ -87,7 +90,8 @@ class GeminiService {
     try {
       const modelConfig = getGeminiModelConfig(modelType);
       // Pass only the model name to getGenerativeModel
-      const model = this.genAI.getGenerativeModel({ model: modelConfig.model });
+      const requestOptions = config.GEMINI_BASE_URL ? { baseUrl: config.GEMINI_BASE_URL } : undefined;
+      const model = this.genAI.getGenerativeModel({ model: modelConfig.model }, requestOptions);
       const content = formatImagePrompt(prompt, mimeType, imageBase64);
 
       // Build request with optional generationConfig
@@ -121,7 +125,8 @@ class GeminiService {
   async transcribeAudio(modelType, audioBase64, mimeType, prompt = null) {
     try {
       const modelConfig = getGeminiModelConfig(modelType);
-      const model = this.genAI.getGenerativeModel({ model: modelConfig.model });
+      const requestOptions = config.GEMINI_BASE_URL ? { baseUrl: config.GEMINI_BASE_URL } : undefined;
+      const model = this.genAI.getGenerativeModel({ model: modelConfig.model }, requestOptions);
       
       // Build content with optional prompt
       const parts = [];
@@ -163,7 +168,8 @@ class GeminiService {
   async analyzeVideo(modelType, prompt, videoBase64, mimeType) {
     try {
       const modelConfig = getGeminiModelConfig(modelType);
-      const model = this.genAI.getGenerativeModel({ model: modelConfig.model });
+      const requestOptions = config.GEMINI_BASE_URL ? { baseUrl: config.GEMINI_BASE_URL } : undefined;
+      const model = this.genAI.getGenerativeModel({ model: modelConfig.model }, requestOptions);
       const content = [{
         parts: [
           { text: prompt },
@@ -196,7 +202,8 @@ class GeminiService {
   async analyzeVideoFromUri(modelType, prompt, fileUri, mimeType) {
     try {
       const modelConfig = getGeminiModelConfig(modelType);
-      const model = this.genAI.getGenerativeModel({ model: modelConfig.model });
+      const requestOptions = config.GEMINI_BASE_URL ? { baseUrl: config.GEMINI_BASE_URL } : undefined;
+      const model = this.genAI.getGenerativeModel({ model: modelConfig.model }, requestOptions);
       const content = [{
         parts: [
           { text: prompt },
@@ -229,7 +236,8 @@ class GeminiService {
   async analyzeImageFromUri(modelType, prompt, fileUri, mimeType) {
     try {
       const modelConfig = getGeminiModelConfig(modelType);
-      const model = this.genAI.getGenerativeModel({ model: modelConfig.model });
+      const requestOptions = config.GEMINI_BASE_URL ? { baseUrl: config.GEMINI_BASE_URL } : undefined;
+      const model = this.genAI.getGenerativeModel({ model: modelConfig.model }, requestOptions);
       const content = [{
         parts: [
           { text: prompt },

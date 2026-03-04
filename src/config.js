@@ -17,6 +17,14 @@ const config = {
   API_KEY: process.env.GEMINI_API_KEY || 'AIzaSyD0AGPlaa8aV8NCFu5xVPMRLdGaamRDIvc',
 
   /**
+   * Gemini API Base URL (for proxies).
+   * Defaults to the official Google endpoint but can be overridden
+   * via the GEMINI_BASE_URL environment variable (e.g. to use an HTTP proxy).
+   * @type {string}
+   */
+  GEMINI_BASE_URL: process.env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com',
+
+  /**
    * Gemini API Key fallbacks for improved reliability.
    * @type {string[]}
    */
@@ -37,7 +45,7 @@ const config = {
    * OpenRouter API Base URL.
    * @type {string}
    */
-  OPENROUTER_BASE_URL: 'https://openrouter.ai/api/v1',
+  OPENROUTER_BASE_URL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
 
   /**
    * Use OpenRouter for advanced image generation (free tier).
@@ -147,34 +155,34 @@ const config = {
    */
   GEMINI_MODELS: {
     IMAGE_GENERATION: {
-      model: 'gemini-2.0-flash-exp',
+      model: process.env.GEMINI_MODEL_IMAGE_GENERATION || 'gemini-2.0-flash-exp',
       generationConfig: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
     },
     IMAGE_EDITING: {
-      model: 'gemini-2.0-flash-exp',
+      model: process.env.GEMINI_MODEL_IMAGE_EDITING || 'gemini-2.0-flash-exp',
       generationConfig: {
         responseModalities: ['TEXT', 'IMAGE'],
         temperature: 0.3, // Lower temperature for consistent edits
       },
     },
     CHAT: {
-      model: 'gemini-2.0-flash',
+      model: process.env.GEMINI_MODEL_CHAT || 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.7, // Higher temperature for more conversational responses
         maxOutputTokens: 2048,
       },
     },
     AUDIO_TRANSCRIPTION: {
-      model: 'gemini-1.5-flash',
+      model: process.env.GEMINI_MODEL_AUDIO_TRANSCRIPTION || 'gemini-1.5-flash',
       generationConfig: {
         temperature: 0.1, // Low temperature for accurate transcription
         maxOutputTokens: 2048,
       },
     },
     CODE_EXECUTION: {
-      model: 'gemini-2.0-flash',
+      model: process.env.GEMINI_MODEL_CODE_EXECUTION || 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.1, // Low temperature for accurate code execution
         maxOutputTokens: 2048,
@@ -184,21 +192,21 @@ const config = {
       }],
     },
     VIDEO_ANALYSIS: {
-      model: 'gemini-2.0-flash',
+      model: process.env.GEMINI_MODEL_VIDEO_ANALYSIS || 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.2, // Low temperature for accurate analysis
         maxOutputTokens: 2048,
       },
     },
     IMAGE_ANALYSIS: {
-      model: 'gemini-2.0-flash',
+      model: process.env.GEMINI_MODEL_IMAGE_ANALYSIS || 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.2, // Low temperature for accurate analysis
         maxOutputTokens: 2048,
       },
     },
     ADVANCED_IMAGE_GENERATION: {
-      model: 'gemini-2.0-flash-exp',
+      model: process.env.GEMINI_MODEL_ADVANCED_IMAGE_GENERATION || 'gemini-2.0-flash-exp',
       generationConfig: {
         responseModalities: ['TEXT', 'IMAGE'],
         temperature: 0.4, // Balanced for creative consistency
@@ -213,7 +221,7 @@ const config = {
   OPENROUTER_MODELS: {
     // Nano Banana - Gemini 2.5 Flash Image (GA)
     ADVANCED_IMAGE_GENERATION: {
-      model: 'google/gemini-2.5-flash-image',
+      model: process.env.OPENROUTER_MODEL_ADVANCED_IMAGE_GENERATION || 'google/gemini-2.5-flash-image',
       generationConfig: {
         temperature: 0.4,
         max_tokens: 2048,
@@ -224,7 +232,7 @@ const config = {
     },
     // Nano Banana Pro - Gemini 3 Pro Image (most advanced)
     NANO_BANANA_PRO: {
-      model: 'google/gemini-3-pro-image-preview',
+      model: process.env.OPENROUTER_MODEL_NANO_BANANA_PRO || 'google/gemini-3-pro-image-preview',
       generationConfig: {
         temperature: 0.4,
         max_tokens: 4096,
